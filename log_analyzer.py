@@ -1,9 +1,9 @@
+import json
 import re
 import requests
 import os
 import sys
 from collections import defaultdict
-import json
 import random
 
 # Replace with your actual API keys
@@ -15,20 +15,26 @@ def parse_log_line(line):
     Parses a single line from the access log.
     Returns a dictionary of parsed fields or None if the line is malformed.
     """
-    log_pattern = re.compile(
-        r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}).*\[(.*?)\]\s"(.*?)\s(.*?)\s(.*?)"\s(\d{3})\s(\d+)'
-    )
-    match = log_pattern.match(line)
-    if match:
-        return {
-            'ip': match.group(1),
-            'timestamp': match.group(2),
-            'method': match.group(3),
-            'request': match.group(4),
-            'protocol': match.group(5),
-            'status_code': int(match.group(6)),
-            'size': int(match.group(7))
-        }
+    # Check if the line contains a JSON object
+    try:
+        # The JSON data starts after the timestamp and other prefixes
+        # This regex isolates the JSON portion of the line
+        json_match = re.search(r'\{.*\}', line)
+        if json_match:
+            json_str = json_match.group(0)
+            log_data = json.loads(json_str)
+            return {
+                'ip': log_data.get('remote_addr'),
+                'timestamp': log_data.get('timestamp'),
+                'method': log_data.get('method'),
+                'request': log_data.get('uri'),
+                'protocol': None, # Not available in this format
+                'status_code': int(log_data.get('status', 0)),
+                'size': None # Not explicitly available in this format
+            }
+    except (json.JSONDecodeError, ValueError):
+        # Handle lines that are not valid JSON, such as header lines or errors
+        return None
     return None
 
 def get_abuseipdb_info(ip):
@@ -159,9 +165,9 @@ def analyze_and_report(log_file_path):
             cti_data = suspicious_ips[high_risk_ip]['cti']
             
             # Simulate an AI response based on the technical data
-            if 'abuse_score' in cti_data and cti_data['abuse_score'] > 80:
+            if 'abuse_score' in cti_data and isinstance(cti_data['abuse_score'], int) and cti_data['abuse_score'] > 80:
                 ai_response = f"The IP address {high_risk_ip} is highly suspicious and is likely being used for a cyber attack, such as a vulnerability scan or a botnet activity, due to a very high number of abuse reports."
-            elif 'malicious_flags' in cti_data and cti_data['malicious_flags'] > 0:
+            elif 'malicious_flags' in cti_data and isinstance(cti_data['malicious_flags'], int) and cti_data['malicious_flags'] > 0:
                 ai_response = f"This IP address, {high_risk_ip}, has been flagged by multiple security vendors as malicious, which suggests it is involved in a threat to your website."
             else:
                 ai_response = "This IP address has a low-to-moderate threat score, indicating it may be associated with some malicious activity but is not a confirmed high-risk threat at this time."
