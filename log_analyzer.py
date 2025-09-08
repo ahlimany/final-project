@@ -1,9 +1,9 @@
-import json
 import re
 import requests
 import os
 import sys
 from collections import defaultdict
+import json
 import random
 
 # Replace with your actual API keys
@@ -103,8 +103,6 @@ def analyze_and_report(log_file_path):
                     ip_stats[ip]['total_requests'] += 1
                     if 400 <= parsed_line['status_code'] < 500:
                         ip_stats[ip]['client_errors'] += 1
-                else:
-                    print(f"⚠️ Skipping malformed log line: {line.strip()}")
     except FileNotFoundError:
         print(f"❌ Error: The file '{log_file_path}' was not found.")
         sys.exit(1)
