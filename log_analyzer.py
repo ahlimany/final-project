@@ -135,59 +135,112 @@ def analyze_logs(log_file, virustotal_api_key):
     return suspicious_ips
 
 def generate_report(suspicious_ips, report_file, gemini_api_key):
-    """Generates a threat report."""
+    """Generates a threat report in HTML format."""
+    
+    # HTML template with Tailwind CSS for styling
+    html_template = f"""
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cybersecurity Threat Analysis Report</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            body {{
+                font-family: 'Inter', sans-serif;
+            }}
+        </style>
+    </head>
+    <body class="bg-gray-900 text-gray-100 p-6 sm:p-10">
 
+        <div class="max-w-7xl mx-auto bg-gray-800 rounded-lg shadow-xl p-8 sm:p-12">
+            <header class="text-center mb-10">
+                <h1 class="text-3xl sm:text-4xl font-bold text-teal-400 mb-2">Cybersecurity Threat Analysis Report</h1>
+                <p class="text-sm text-gray-400">Report Generated: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
+            </header>
+
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-teal-300 mb-4">Summary</h2>
+                <div class="bg-gray-700 p-6 rounded-lg">
+                    <p class="text-lg">Found {len(suspicious_ips)} suspicious IP addresses.</p>
+                </div>
+            </section>
+
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-teal-300 mb-4">Detailed Findings</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    """
+    
+    threat_number = 1
+    for ip, data in suspicious_ips.items():
+        if data['confidence_score'] >= 0:
+            cisco_talos_data = data.get('cisco_talos', {})
+            virustotal_data = data.get('virustotal', {}).get('data', {})
+            virustotal_stats = virustotal_data.get('attributes', {}).get('last_analysis_stats', {})
+            
+            severity = "Low"
+            severity_color = "text-green-400"
+            if data['confidence_score'] > 50:
+                severity = "Medium"
+                severity_color = "text-yellow-400"
+            if data['confidence_score'] > 80:
+                severity = "High"
+                severity_color = "text-red-400"
+            
+            # HTML for each threat card
+            html_template += f"""
+                    <div class="bg-gray-700 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
+                        <h3 class="text-xl font-bold text-white mb-2">Threat #{threat_number}</h3>
+                        <p class="text-gray-400">IP Address: <span class="text-teal-300">{ip}</span></p>
+                        <p class="mt-1">Severity: <span class="{severity_color} font-semibold">{severity}</span></p>
+                        <ul class="mt-4 space-y-2 text-sm">
+                            <li><span class="font-semibold">Cisco Talos Reputation:</span> {cisco_talos_data.get('reputation', 'N/A')}</li>
+                            <li><span class="font-semibold">Cisco Talos Owner:</span> {cisco_talos_data.get('owner', 'N/A')}</li>
+                            <li><span class="font-semibold">VirusTotal Stats:</span> {json.dumps(virustotal_stats)}</li>
+            """
+            
+            if 'attributes' in virustotal_data and 'as_owner' in virustotal_data['attributes']:
+                html_template += f"""
+                            <li><span class="font-semibold">ASN:</span> {virustotal_data['attributes'].get('asn', 'N/A')}</li>
+                            <li><span class="font-semibold">Organization:</span> {virustotal_data['attributes'].get('as_owner', 'N/A')}</li>
+                            <li><span class="font-semibold">Country:</span> {virustotal_data['attributes'].get('country', 'N/A')}</li>
+                            <li><span class="font-semibold">RIR:</span> {virustotal_data['attributes'].get('regional_internet_registry', 'N/A')}</li>
+                """
+
+            html_template += """
+                        </ul>
+                    </div>
+            """
+            threat_number += 1
+            
+    # Closing HTML tags and adding the analyst note section
+    html_template += f"""
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-teal-300 mb-4">AI-Generated Analyst Note</h2>
+                <div class="bg-gray-700 p-6 rounded-lg prose prose-invert max-w-none">
+    """
+    if gemini_api_key:
+        analyst_note = generate_analyst_note(suspicious_ips)
+        # Replacing newlines with HTML breaks for proper formatting
+        html_template += f"<p>{analyst_note.replace('**', '<strong>').replace('###', '<h4>').replace('\\n', '<br>')}</p>"
+    else:
+        html_template += "<p>Gemini API key not provided. Cannot generate analyst note.</p>"
+        
+    html_template += """
+                </div>
+            </section>
+        </div>
+
+    </body>
+    </html>
+    """
+    
     with open(report_file, 'w') as f:
-        f.write("Threat Report\n")
-        f.write("=" * 20 + "\n\n")
-        
-        f.write("Summary:\n")
-        f.write(f"Found {len(suspicious_ips)} suspicious IP addresses.\n\n")
-        f.write("Details:\n")
-        
-        threat_number = 1
-        for ip, data in suspicious_ips.items():
-            if data['confidence_score'] >= 0:
-                cisco_talos_data = data.get('cisco_talos', {})
-                virustotal_data = data.get('virustotal', {}).get('data', {})
-                virustotal_stats = virustotal_data.get('attributes', {}).get('last_analysis_stats', {})
-                
-                source_log_entry = "Log entry not captured"
-                
-                severity = "*Low*"
-                if data['confidence_score'] > 50:
-                    severity = "*Medium*"
-                if data['confidence_score'] > 80:
-                    severity = "*High*"
-
-                f.write(f"\n### Threat #{threat_number} - {ip}\n")
-                f.write(f"- Indicator: Malicious IP Detected\n")
-                f.write(f"- Severity: {severity}\n")
-                f.write(f"- Source IP: {ip}\n")
-                
-                if cisco_talos_data:
-                    f.write(f"- Cisco Talos Reputation: {cisco_talos_data.get('reputation', 'N/A')}\n")
-                    f.write(f"- Cisco Talos Owner: {cisco_talos_data.get('owner', 'N/A')}\n")
-
-                if virustotal_stats:
-                    f.write(f"- VirusTotal Stats: {virustotal_stats}\n")
-                    
-                if 'attributes' in virustotal_data and 'as_owner' in virustotal_data['attributes']:
-                    f.write(f"- ASN: {virustotal_data['attributes'].get('asn', 'N/A')}\n")
-                    f.write(f"- Organization: {virustotal_data['attributes'].get('as_owner', 'N/A')}\n")
-                    f.write(f"- Country: {virustotal_data['attributes'].get('country', 'N/A')}\n")
-                    f.write(f"- RIR: {virustotal_data['attributes'].get('regional_internet_registry', 'N/A')}\n")
-                    
-                summary = f"IP {ip} was flagged for Malicious IP Detected with severity {severity}."
-                f.write(f"- Summary: {summary}\n")
-
-                threat_number += 1
-                
-        if gemini_api_key:
-            f.write(generate_analyst_note(suspicious_ips))
-        else:
-            f.write("Gemini API key not provided. Cannot generate analyst note.")
-
+        f.write(html_template)
 
 def generate_blocking_rules(suspicious_ips, rules_file):
     """Generates firewall blocking rules."""
@@ -199,7 +252,7 @@ def generate_blocking_rules(suspicious_ips, rules_file):
 
 if __name__ == "__main__":
     LOG_FILE = 'access_log.txt'
-    REPORT_FILE = 'threat_report.md'
+    REPORT_FILE = 'threat_report.html'
     RULES_FILE = 'blocking_rules.sh'
 
     virustotal_api_key, gemini_api_key = get_api_keys()
