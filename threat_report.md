@@ -10,41 +10,62 @@ Details:
 - Indicator: Malicious IP Detected
 - Severity: *Low*
 - Source IP: 18.237.3.202
+- VirusTotal Stats: {'malicious': 7, 'suspicious': 4, 'undetected': 26, 'harmless': 58, 'timeout': 0}
+- ASN: 16509
+- Organization: AMAZON-02
+- Network: 18.236.0.0/15
+- Country: US
+- RIR: ARIN
 - Summary: IP 18.237.3.202 was flagged for Malicious IP Detected with severity *Low*.
 
 ### Threat #2 - 14.103.172.199
 - Indicator: Malicious IP Detected
 - Severity: *Low*
 - Source IP: 14.103.172.199
+- VirusTotal Stats: {'malicious': 7, 'suspicious': 3, 'undetected': 30, 'harmless': 55, 'timeout': 0}
+- ASN: 4811
+- Organization: China Telecom Group
+- Network: 14.103.128.0/17
+- Country: CN
+- RIR: APNIC
 - Summary: IP 14.103.172.199 was flagged for Malicious IP Detected with severity *Low*.
 ## Actionable Intelligence Report - Suspicious IP Addresses
 
 **Date:** October 26, 2023
 
-**Subject:**  Unauthorized API Access and Potentially Malicious IP Address
+**Subject:**  High Confidence of Malicious Activity from IP Addresses 18.237.3.202 and 14.103.172.199
 
-**Executive Summary:**  Analysis of two IP addresses (18.237.3.202 and 14.103.172.199) revealed a critical lack of external threat intelligence due to unauthorized API access. While lacking definitive malicious indicators, the initial findings warrant immediate action.
+**1. Executive Summary:**
+
+This report analyzes two IP addresses flagged by the security monitoring system.  IP address 18.237.3.202 exhibits a high confidence score (10/10) due to a suspicious user agent and multiple positive malicious flags from VirusTotal despite the IP address belonging to Amazon. IP address 14.103.172.199 presents a lower immediate threat but warrants investigation due to multiple VirusTotal flags indicating malicious or suspicious activity.  Both require immediate attention.
+
+**2. Critical Threats:**
+
+* **18.237.3.202 (High Priority):**  This IP, despite being registered to Amazon, shows a high confidence score and a suspicious user agent.  The "Criminal IP" and "EmergingThreats" blacklists flag it as malicious, indicating potential compromise or malicious use of an Amazon resource. The suspicious user agent further strengthens this suspicion.  Immediate action is required to determine the extent of compromise and prevent further activity.
+
+* **14.103.172.199 (Medium Priority):** This IP address, located in China and associated with ByteDance (Volcano Engine), shows several malicious flags ("Criminal IP," "Certego," "CyRadar," "Fortinet," and "VIPRE") on VirusTotal. This suggests potential malicious activity emanating from this source. While the confidence score is lower, the multiple positive flags warrant investigation.
+
+**3. Immediate Next Steps:**
+
+* **18.237.3.202:**
+    * **Isolate:** Immediately isolate the affected system(s) communicating with 18.237.3.202 to prevent further compromise.
+    * **Forensic Analysis:** Conduct a thorough forensic investigation of the affected system(s) to identify the extent of any compromise, determine the type of malware (if any), and identify any exfiltrated data.
+    * **Amazon Abuse Report:**  Report the suspicious activity to Amazon's abuse contact (trustandsafety@support.aws.com, information provided in the RDAP data) and provide logs of the suspicious activity.
+    * **Review Network Logs:** Analyze network traffic logs to determine the full scope of communication with this IP, including destinations and data transferred.
+
+* **14.103.172.199:**
+    * **Threat Hunting:**  Initiate threat hunting activities to identify any related malware or indicators of compromise within the organization’s network.
+    * **Log Analysis:** Review logs for any communication with this IP to understand the nature of interaction.
+    * **ByteDance Abuse Report:** Attempt to contact ByteDance's abuse contact (gnoc@bytedance.com, information provided in the RDAP data) to report the suspicious activity and gather information.
+    * **Blocklist Implementation:** Consider adding this IP to the organization’s blocklist to prevent further connections.
 
 
-**Critical Threats:**
+**4. Further Investigation:**
 
-* **API Key Compromise:**  The 401 Unauthorized errors from both VirusTotal and AbuseIPDB APIs indicate a potential compromise of our API keys. This grants unauthorized access to our threat intelligence feeds and severely compromises our security posture.  This is the **most critical threat**.
+* Obtain a valid API key for AbuseIPDB to get detailed information on reported abuse.
+* Investigate any vulnerabilities identified on affected systems.
+* Implement or enhance security measures to prevent future similar incidents.
 
-* **Potentially Malicious Activity (IP 18.237.3.202):** IP address 18.237.3.202 shows a high confidence score (10) and a suspicious user-agent. This requires further investigation despite the lack of external threat intelligence data.
+**5. Reporting:**
 
-
-**Recommendations:**
-
-**Immediate Actions (High Priority):**
-
-1. **Revoke and Regenerate API Keys:** Immediately revoke all VirusTotal and AbuseIPDB API keys.  Generate new keys with restricted access permissions.  Monitor for unauthorized access attempts post-regeneration.
-2. **Investigate IP 18.237.3.202:**  Utilize alternative threat intelligence sources (e.g., internal threat hunting tools, manual investigation using network logs and firewall rules) to assess the risk posed by IP 18.237.3.202. Focus on identifying any associated network activity within our infrastructure.  Consider adding this IP to a blacklist.
-3. **Security Audit:** Conduct a thorough security audit of systems and processes to identify potential vulnerabilities that allowed the API key compromise to occur.  This will be crucial in preventing future incidents.
-
-**Follow-up Actions (Medium Priority):**
-
-1. **Implement API Key Rotation:** Implement a strict policy of regular API key rotation for all external threat intelligence platforms.
-2. **Enhance Logging and Monitoring:** Improve logging and monitoring of API usage to detect unauthorized access attempts in real time.
-3. **Investigate User Agent:** Investigate the nature of the suspicious user-agent associated with 18.237.3.202.
-
-**Next Steps:**  This report necessitates immediate action from the security engineering team to address API key compromise and from the incident response team to further investigate the suspicious IP address.  A follow-up report will be provided after the completion of the immediate actions.
+This report will be updated as further investigation yields additional information.  Regular updates will be provided as the situation unfolds.
