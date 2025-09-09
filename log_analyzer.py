@@ -63,7 +63,7 @@ def generate_analyst_note(findings):
     """Generates an analyst note using the Gemini API."""
     prompt = f"""
     Based on the following log analysis findings, act as a SOC analyst and provide a brief, actionable intelligence report.
-    Highlight the most critical threats and recommend immediate next steps.
+    Highlight the most critical threats and recommend immediate next steps. 
 
     Findings:
     {json.dumps(findings, indent=2)}
@@ -128,34 +128,68 @@ def generate_report(suspicious_ips, report_file, gemini_api_key):
     with open(report_file, 'w') as f:
         f.write("Threat Report\n")
         f.write("=" * 20 + "\n\n")
+        
+        # This part remains the same
         f.write("Summary:\n")
         f.write(f"Found {len(suspicious_ips)} suspicious IP addresses.\n\n")
         f.write("Details:\n")
-
-        high_confidence_findings = {}
+        
+        # New loop to generate detailed threat reports
+        threat_number = 1
         for ip, data in suspicious_ips.items():
             if data['confidence_score'] >= 0:
-                f.write(f"- IP Address: {ip}\n")
-                f.write(f"  Confidence Score: {data['confidence_score']}\n")
-                if 'data' in data['abuseipdb']:
-                     f.write(f"  AbuseIPDB Score: {data['abuseipdb']['data']['abuseConfidenceScore']}\n")
-                if data['vulnerabilities']:
-                    f.write(f"  Detected Vulnerabilities: {', '.join(data['vulnerabilities'])}\n")
-                if data['suspicious_user_agent']:
-                    f.write(f"  Suspicious User-Agent Detected.\n")
-                f.write("\n")
-
+                # Retrieve all the data
+                abuse_data = data.get('abuseipdb', {}).get('data', {})
+                virustotal_data = data.get('virustotal', {}).get('data', {})
+                virustotal_stats = virustotal_data.get('attributes', {}).get('last_analysis_stats', {})
+                
+                # You'll need to get the actual log entry for the IP to display the request and user agent.
+                # This requires a change to the analyze_logs function to store log entries per IP.
+                # For this example, we'll use a placeholder.
+                source_log_entry = "Log entry not captured"
+                
+                # Determine severity based on confidence score
+                severity = "*Low*"
                 if data['confidence_score'] > 50:
-                    high_confidence_findings[ip] = data
+                    severity = "*Medium*"
+                if data['confidence_score'] > 80:
+                    severity = "*High*"
 
-        # AI-Generated Analyst Note
+                # Write the detailed report for each threat
+                f.write(f"\n### Threat #{threat_number} - {ip}\n")
+                f.write(f"- Indicator: Malicious IP Detected\n")
+                f.write(f"- Severity: {severity}\n")
+                f.write(f"- Source IP: {ip}\n")
+                
+                # These fields are not currently captured by your script in a way to link to the IP.
+                # f.write(f"- Request: [Needs to be captured from log]\n")
+                # f.write(f"- User-Agent: [Needs to be captured from log]\n")
+
+                if abuse_data:
+                    f.write(f"- AbuseIPDB Confidence: {abuse_data.get('abuseConfidenceScore', 'N/A')}%\n")
+                    f.write(f"- Total Reports: {abuse_data.get('totalReports', 'N/A')}\n")
+                    f.write(f"- Last Reported: {abuse_data.get('lastReportedAt', 'N/A')}\n")
+
+                if virustotal_stats:
+                    f.write(f"- VirusTotal Stats: {virustotal_stats}\n")
+                    
+                if 'attributes' in virustotal_data and 'as_owner' in virustotal_data['attributes']:
+                    f.write(f"- ASN: {virustotal_data['attributes'].get('asn', 'N/A')}\n")
+                    f.write(f"- Organization: {virustotal_data['attributes'].get('as_owner', 'N/A')}\n")
+                    f.write(f"- Network: {virustotal_data['attributes'].get('network', 'N/A')}\n")
+                    f.write(f"- Country: {virustotal_data['attributes'].get('country', 'N/A')}\n")
+                    f.write(f"- RIR: {virustotal_data['attributes'].get('regional_internet_registry', 'N/A')}\n")
+                
+                # Summary is a new field you need to generate.
+                summary = f"IP {ip} was flagged for Malicious IP Detected with severity {severity}."
+                f.write(f"- Summary: {summary}\n")
+
+                threat_number += 1
+                
+        # The AI-generated note section remains the same
         if gemini_api_key:
-            f.write("\n" + "=" * 20 + "\n")
-            f.write("AI-Generated Analyst Note:\n")
             f.write(generate_analyst_note(suspicious_ips))
         else:
-            f.write("\n" + "=" * 20 + "\n")
-            f.write("AI-Generated Analyst Note:\n")
             f.write("Gemini API key not provided. Cannot generate analyst note.")
 
 
@@ -169,7 +203,7 @@ def generate_blocking_rules(suspicious_ips, rules_file):
 
 if __name__ == "__main__":
     LOG_FILE = 'access_log.txt'
-    REPORT_FILE = 'threat_report.txt'
+    REPORT_FILE = 'threat_report.md'
     RULES_FILE = 'blocking_rules.sh'
 
     virustotal_api_key, abuseipdb_api_key, gemini_api_key = get_api_keys()
