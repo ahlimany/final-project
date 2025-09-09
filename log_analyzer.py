@@ -8,9 +8,8 @@ import os
 
 def get_api_keys():
     """Prompts the user to enter their API keys."""
-    print("Please enter your API keys:")
-    virustotal_api_key = input("VirusTotal API Key: ")
-    gemini_api_key = input("Gemini API Key: ")
+    virustotal_api_key = "1b5a7f7d84a7eda7afa4612eddedde7c04cfcd11b3a4d5a7f889e2687c7f7023"
+    gemini_api_key = "AIzaSyCgYR4ZMnSm8YLwkXeX6EV07kzwOg2zChc"
     return virustotal_api_key, gemini_api_key
 
 def configure_apis(gemini_api_key):
@@ -134,6 +133,29 @@ def analyze_logs(log_file, virustotal_api_key):
 
     return suspicious_ips
 
+def convert_raw_text_to_html(raw_text):
+    """Converts a raw string with simple markdown to formatted HTML."""
+    html_text = raw_text
+    
+    # Convert headings (e.g., ### Heading -> <h3>Heading</h3>)
+    html_text = re.sub(r'^###\s*(.*?)$', r'<h3>\1</h3>', html_text, flags=re.MULTILINE)
+    
+    # Convert bold (e.g., **text** -> <strong>text</strong>)
+    html_text = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', html_text)
+    
+    # Replace newlines with breaks, while trying to create paragraphs for better spacing
+    paragraphs = html_text.split('\n\n')
+    formatted_paragraphs = []
+    for p in paragraphs:
+        if p.strip():
+            # Check if the line is a heading to avoid wrapping it in a p tag
+            if p.strip().startswith('<h3'):
+                formatted_paragraphs.append(p)
+            else:
+                formatted_paragraphs.append(f'<p>{p.replace("\n", "<br>")}</p>')
+    
+    return "\n".join(formatted_paragraphs)
+
 def generate_report(suspicious_ips, report_file, gemini_api_key):
     """Generates a threat report in HTML format."""
     
@@ -225,8 +247,8 @@ def generate_report(suspicious_ips, report_file, gemini_api_key):
     """
     if gemini_api_key:
         analyst_note = generate_analyst_note(suspicious_ips)
-        # Replacing newlines with HTML breaks for proper formatting
-        html_template += f"<p>{analyst_note.replace('**', '<strong>').replace('###', '<h4>').replace('\\n', '<br>')}</p>"
+        # Convert raw text to formatted HTML
+        html_template += convert_raw_text_to_html(analyst_note)
     else:
         html_template += "<p>Gemini API key not provided. Cannot generate analyst note.</p>"
         

@@ -17,7 +17,7 @@
         <div class="max-w-7xl mx-auto bg-gray-800 rounded-lg shadow-xl p-8 sm:p-12">
             <header class="text-center mb-10">
                 <h1 class="text-3xl sm:text-4xl font-bold text-teal-400 mb-2">Cybersecurity Threat Analysis Report</h1>
-                <p class="text-sm text-gray-400">Report Generated: 2025-09-09 07:50:08</p>
+                <p class="text-sm text-gray-400">Report Generated: 2025-09-09 09:34:45</p>
             </header>
 
             <section class="mb-10">
@@ -38,7 +38,7 @@
                         <ul class="mt-4 space-y-2 text-sm">
                             <li><span class="font-semibold">Cisco Talos Reputation:</span> N/A</li>
                             <li><span class="font-semibold">Cisco Talos Owner:</span> N/A</li>
-                            <li><span class="font-semibold">VirusTotal Stats:</span> {"malicious": 7, "suspicious": 4, "undetected": 26, "harmless": 58, "timeout": 0}</li>
+                            <li><span class="font-semibold">VirusTotal Stats:</span> {"malicious": 8, "suspicious": 3, "undetected": 26, "harmless": 58, "timeout": 0}</li>
             
                             <li><span class="font-semibold">ASN:</span> 16509</li>
                             <li><span class="font-semibold">Organization:</span> AMAZON-02</li>
@@ -55,7 +55,7 @@
                         <ul class="mt-4 space-y-2 text-sm">
                             <li><span class="font-semibold">Cisco Talos Reputation:</span> N/A</li>
                             <li><span class="font-semibold">Cisco Talos Owner:</span> N/A</li>
-                            <li><span class="font-semibold">VirusTotal Stats:</span> {"malicious": 7, "suspicious": 3, "undetected": 30, "harmless": 55, "timeout": 0}</li>
+                            <li><span class="font-semibold">VirusTotal Stats:</span> {"malicious": 8, "suspicious": 2, "undetected": 29, "harmless": 56, "timeout": 0}</li>
             
                             <li><span class="font-semibold">ASN:</span> 4811</li>
                             <li><span class="font-semibold">Organization:</span> China Telecom Group</li>
@@ -71,45 +71,21 @@
             <section>
                 <h2 class="text-2xl font-semibold text-teal-300 mb-4">AI-Generated Analyst Note</h2>
                 <div class="bg-gray-700 p-6 rounded-lg prose prose-invert max-w-none">
-    <p>## Actionable Intelligence Report
-
-<strong>Date:<strong> October 26, 2023
-
-<strong>Subject:<strong> High-Confidence Threat Detected - IP Address 18.237.3.202
-
-<strong>Executive Summary:<strong>
-
-Analysis reveals a high-confidence threat associated with IP address `18.237.3.202`.  Multiple threat intelligence sources flag this IP as malicious, indicating potential compromise or malicious activity.  IP address `14.103.172.199` shows a lower threat level based on current data. Immediate action is required to mitigate the risk posed by `18.237.3.202`.
-
-
-<strong>Critical Threat:<strong>
-
-* <strong>IP Address 18.237.3.202:<strong>  This IP address is identified as malicious by multiple reputable sources including VirusTotal (`Criminal IP`, `CRDF`, `CyRadar`, `EmergingThreats`, `Fortinet`, and `VIPRE`).  The presence of a "suspicious user agent" further strengthens this classification. The confidence score of 10 indicates a high degree of certainty.  The IP belongs to Amazon, which may indicate a compromised AWS resource.
-
-<strong>Lower-Priority Threat:<strong>
-
-* <strong>IP Address 14.103.172.199:<strong> This IP address, while flagged as malicious by some VirusTotal sources (`Certego`, `IPsum`, `SOCRadar`), exhibits a lower overall risk (`confidence_score: 0`).  Further investigation is warranted but not as urgent as `18.237.3.202`.
-
-
-<strong>Immediate Next Steps:<strong>
-
-1. <strong>Block IP Address 18.237.3.202:<strong> Immediately implement network-level blocking of this IP address at all ingress and egress points to prevent further communication.
-2. <strong>Investigate Internal Systems:<strong> Analyze logs for any connections originating from or destined to `18.237.3.202`. Identify affected systems and determine the extent of potential compromise.  Pay close attention to any unusual activity, data exfiltration attempts, or unauthorized access.
-3. <strong>Malware Analysis:<strong> If internal systems show communication with `18.237.3.202`, conduct a full malware scan and investigation of affected machines. Consider isolating compromised systems.
-4. <strong>Amazon AWS Security Review (if applicable):<strong> If the organization uses AWS services, contact AWS security support to report the incident and investigate potential compromise of your cloud infrastructure.  Review security group configurations and access controls.
-5. <strong>Threat Hunting:<strong> Proactively hunt for any indicators of compromise (IOCs) related to this IP address beyond immediate network connections. This might include examining processes, registry keys, and files on affected systems.
-6. <strong>Monitor for Further Activity:<strong> Continue to monitor for any further attempts to connect from similar IP addresses or other IOCs identified during the investigation.
-
-
-<strong>Further Investigation:<strong>
-
-* <strong>Cisco Talos Integration:<strong> Resolve the 403 error encountered with Cisco Talos to access additional reputation data for both IPs.
-* <strong>Vulnerability Assessment:<strong>  Conduct vulnerability scanning on potentially affected systems to identify and remediate any weaknesses that may have been exploited.
-* <strong>Incident Response Plan:<strong> Follow established incident response procedures, including documentation, escalation, and communication to relevant stakeholders.
-
-
-This report highlights the immediate actions required to address the critical threat posed by `18.237.3.202`.  Further investigation is necessary to fully understand the extent of the compromise and prevent future incidents.
-</p>
+    <p>## Actionable Intelligence Report - Suspicious IP Addresses</p>
+<p><strong>Date:</strong> October 26, 2023</p>
+<p><strong>Subject:</strong>  Detection of Potentially Malicious IP Addresses</p>
+<p><strong>Analyst:</strong> [Your Name/Analyst ID]</p>
+<p><br><strong>Executive Summary:</strong></p>
+<p>Two IP addresses, 18.237.3.202 and 14.103.172.199, have been identified as potentially malicious based on log analysis and threat intelligence queries.  18.237.3.202 presents a higher risk due to a higher confidence score and the detection of a suspicious user agent.  Immediate action is required to mitigate potential threats.</p>
+<p><br><strong>Critical Threats:</strong></p>
+<p>* <strong>18.237.3.202:</strong> This IP address, despite being registered to Amazon, has flagged as malicious by multiple reputable threat intelligence feeds (Criminal IP, ArcSight Threat Intelligence, CyRadar, Emerging Threats, Fortinet, and VIPRE). The presence of a suspicious user agent further strengthens the threat assessment.  This suggests potential compromise of an Amazon server or malicious activity originating from a system within that network.</p>
+<p>* <strong>14.103.172.199:</strong> This IP address, associated with Bytedance (Volcano Engine), is flagged as malicious by fewer sources (Criminal IP, Certego, CyRadar, and IPsum) than 18.237.3.202. While the confidence score is lower, its association with malicious activity warrants investigation.</p>
+<p><strong>Immediate Next Steps:</strong></p>
+<p>1. <strong>High Priority (18.237.3.202):</strong><br>    * <strong>Block:</strong> Immediately block all inbound and outbound traffic from 18.237.3.202 at the network perimeter firewall.<br>    * <strong>Investigate:</strong> Initiate a full investigation to determine the extent of potential compromise on our systems. This includes reviewing logs for any connections to this IP, analyzing any related malware samples, and identifying any affected systems or data.<br>    * <strong>Alert:</strong> Notify Amazon's abuse contact (details available in the report data) regarding the malicious activity associated with their IP address.</p>
+<p>2. <strong>Medium Priority (14.103.172.199):</strong><br>    * <strong>Monitor:</strong>  Closely monitor network traffic to and from this IP address for any suspicious activity.<br>    * <strong>Investigate:</strong>  Conduct a less urgent investigation to determine if this IP address has interacted with our systems and the nature of such interactions.<br>    * <strong>Alert:</strong> Consider notifying Bytedance's abuse contact (details in report data) if suspicious activity is confirmed.</p>
+<p><br><strong>Further Actions:</strong></p>
+<p>* <strong>Review Security Controls:</strong> Evaluate and strengthen existing security controls, including intrusion detection/prevention systems (IDS/IPS), web application firewalls (WAFs), and endpoint detection and response (EDR) solutions to prevent similar incidents.<br>* <strong>Threat Intelligence Enrichment:</strong> Improve the integration of multiple threat intelligence feeds to enhance threat detection capabilities.</p>
+<p><br>This report provides preliminary findings.  Further analysis and investigation are crucial to determine the full impact and to implement comprehensive remediation strategies.<br></p>
                 </div>
             </section>
         </div>
