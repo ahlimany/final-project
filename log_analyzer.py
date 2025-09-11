@@ -376,6 +376,7 @@ def generate_report(suspicious_ips, stats, report_file, gemini_api_key):
     if gemini_api_key:
         print("Generating AI note...")
         analyst_note = generate_analyst_note({'stats': stats, 'ips': suspicious_ips})
+        analyst_note = analyst_note.replace('```html', '').replace('```', '')
         html_template += analyst_note
         print("AI note generated.")
     else:
