@@ -375,10 +375,14 @@ def generate_report(suspicious_ips, stats, report_file, gemini_api_key):
     """
     if gemini_api_key:
         print("Generating AI note...")
-        analyst_note = generate_analyst_note({'stats': stats, 'ips': suspicious_ips})
-        analyst_note = analyst_note.replace('```html', '').replace('```', '')
-        html_template += analyst_note
-        print("AI note generated.")
+        try:
+            analyst_note = generate_analyst_note({'stats': stats, 'ips': suspicious_ips})
+            analyst_note = analyst_note.replace('```html', '').replace('```', '').strip()
+            html_template += analyst_note
+        except Exception as e:
+            print(f"Gemini error: {e}")
+            html_template += "<p>AI analyst note generation failed due to API issue. See stats and IP details above for manual analysis.</p>"
+        print("AI note generated or fallback used.")
     else:
         html_template += "<p>Gemini API key not provided. Cannot generate analyst note.</p>"
         
