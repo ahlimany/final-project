@@ -45,7 +45,7 @@ def get_report():
     if os.path.exists(report_file):
         return send_file(report_file)
     else:
-        return 'Report is not ready yet. Please try again in a few minutes or refresh the page.'
+        return render_template('report.html')
 
 if __name__ == '__main__':
     if len(sys.argv) > 1 and sys.argv[1] == 'cli':
