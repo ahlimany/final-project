@@ -1,7 +1,0 @@
-requests
-google.generativeai
-flask
-json
-re
-datetime
-threading
