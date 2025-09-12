@@ -28,7 +28,7 @@ python app.py cli <path_to_log_file>
 - The tool will process the log, generate a report, and save it as `threat_report.html` in the `reports/` directory.
 - This mode is **recommended** as it consumes minimal resources.
 
-- To open the report use 
+- To open the report use (Ex: you use firefox browser, if not replace the 'firefox' with your browser)
 ```bash
 firefox reports/threat_report
 ```
