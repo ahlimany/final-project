@@ -66,4 +66,4 @@ Review the generated HTML report (e.g., report_20250912_210438.html) in the repo
 
 
 ## License
-This project is licensed under the MIT License. See the LICENSE(./LISCENCE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](./LISCENCE) file for details.
