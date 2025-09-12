@@ -21,7 +21,7 @@ import markdown as md_converter
 # API Keys
 ABUSEIPDB_API_KEY = '8e09a441741aa9d719ee96d433b23699c75637e4131e30eaed682904334d72f892087ff7e741fb41'
 VIRUSTOTAL_API_KEY = '1b5a7f7d84a7eda7afa4612eddedde7c04cfcd11b3a4d5a7f889e2687c7f7023'
-GEMINI_API_KEY = 'AIzaSyAaVwSTjO-89oRQBqROQpfK37vk2E5ZzoQ'
+GEMINI_API_KEY = 'AIzaSyCqFH3Igpm1yrB4z2KyIoW_4bs1nwxRjBU'
 
 # Configure Gemini
 genai.configure(api_key=GEMINI_API_KEY)
