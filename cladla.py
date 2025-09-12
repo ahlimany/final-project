@@ -19,9 +19,9 @@ from datetime import datetime
 import markdown as md_converter
 
 # API Keys
-ABUSEIPDB_API_KEY = '8e09a441741aa9d719ee96d433b23699c75637e4131e30eaed682904334d72f892087ff7e741fb41'
+ABUSEIPDB_API_KEY = '0c0f69b1dd11ed1b9c50a3ce8faad2acc596b4a5a39076d757fa3c4ddd6f3438c8208228784ab0db'
 VIRUSTOTAL_API_KEY = '1b5a7f7d84a7eda7afa4612eddedde7c04cfcd11b3a4d5a7f889e2687c7f7023'
-GEMINI_API_KEY = 'AIzaSyCqFH3Igpm1yrB4z2KyIoW_4bs1nwxRjBU'
+GEMINI_API_KEY = 'AIzaSyAaVwSTjO-89oRQBqROQpfK37vk2E5ZzoQ'
 
 # Configure Gemini
 genai.configure(api_key=GEMINI_API_KEY)
@@ -46,7 +46,7 @@ ____  _      _      ____  _        _
 / ___|| |    / \\    |  _ \\| |      / \\
 | |    | |   / _ \\   | | | | |     / _ \\
  | |___ | |__/ ___ \\  | |_| | |___ / ___ \\
-   \\____||___/_/   \\_\\ |____/|_____/_/   \\_\\
+  \\____||____/_/   \\_\\ |____/|_____/_/   \\_\\
 [white]   MADE BY AHLIMAN ABBASOV
 """
 
@@ -72,7 +72,7 @@ def get_unique_ips(logs):
 
 def check_abuseipdb(ip):
     try:
-        url = f"[https://api.abuseipdb.com/api/v2/check?ipAddress=](https://api.abuseipdb.com/api/v2/check?ipAddress=){ip}"
+        url = f"https://api.abuseipdb.com/api/v2/check?ipAddress={ip}"
         headers = {'Key': ABUSEIPDB_API_KEY, 'Accept': 'application/json'}
         response = requests.get(url, headers=headers)
         response.raise_for_status()
@@ -94,7 +94,7 @@ def check_abuseipdb(ip):
 
 def check_talos(ip):
     try:
-        url = f"[https://talosintelligence.com/reputation_center/lookup?search=](https://talosintelligence.com/reputation_center/lookup?search=){ip}"
+        url = f"https://talosintelligence.com/reputation_center/lookup?search={ip}"
         response = requests.get(url)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -118,7 +118,7 @@ def check_talos(ip):
 
 def check_virustotal(ip):
     try:
-        url = f"[https://www.virustotal.com/api/v3/ip_addresses/](https://www.virustotal.com/api/v3/ip_addresses/){ip}"
+        url = f"https://www.virustotal.com/api/v3/ip_addresses/{ip}"
         headers = {'x-apikey': VIRUSTOTAL_API_KEY}
         response = requests.get(url, headers=headers)
         response.raise_for_status()
@@ -243,40 +243,9 @@ def clean_ai_response(text):
         return match.group(1).strip()
     return text.strip()
 
-def ai_explain_threat(cti, stats):
-    prompt = f"Explain this threat in one plain-English sentence for a non-technical person: IP with CTI {cti} and stats {stats}."
-    try:
-        response = model.generate_content(prompt)
-        return clean_ai_response(response.text)
-    except Exception as e:
-        console.print(f"[yellow]Warning: AI error - {e}[/yellow]")
-        return "AI explanation unavailable."
-
-def ai_analyst_report(findings):
-    prompt = f"""
-Based on the following log analysis and CTI findings:
-
-{json.dumps(findings, indent=2)}
-
-Act as an expert SOC analyst and generate a highly detailed, actionable intelligence report with a strong emphasis on solving security issues. The AI-generated content is the core of this report, so provide in-depth analysis and insights. Structure the report with the following sections, each with comprehensive content:
-- Executive Summary: Offer a concise yet thorough overview, including total requests, unique IPs, overall threat level, and key takeaways for decision-makers.
-- Threat Assessment: Provide an exhaustive analysis of critical threats, listing all IP addresses with severity levels (Malicious, Suspicious, Harmless), detailed CTI data (e.g., abuse scores, malicious counts, geographic origins), and potential impact on the system.
-- Anomalous Patterns: Identify and explain unusual activity patterns (e.g., high 404 ratios, malicious user agents) with specific examples from the data, hypothesize root causes, and correlate with CTI findings.
-- Problem-Solving Approach: Deliver a robust strategy to address threats, including root cause analysis, specific mitigation tactics (e.g., IP blocking scripts, firewall rule updates, intrusion detection configurations), and sample configurations or code snippets where applicable.
-- Recommendations: Present a prioritized action plan with clear, actionable steps, estimated timelines (e.g., immediate, within 24 hours, within 1 week), and suggested responsible teams or roles (e.g., network admins, security team).
-- Additional Insights: Provide advanced observations (e.g., ISP trends, regional threat clusters, historical context) to enhance long-term security posture and prevent recurrence.
-Output only the HTML content for the report section (do not include <html>, <head>, or <body> tags).
-Use Tailwind CSS classes for a professional design inspired by VirusTotal (light theme, blue accents like text-blue-600, bg-white), with h2 for main sections, h3 for subsections, detailed lists, tables for data comparison, and severity badges (e.g., bg-red-100 text-red-800 for Malicious, bg-yellow-100 text-yellow-800 for Suspicious).
-Ensure the AI content is the highlight, offering deep insights, practical solutions, and a clear narrative to guide security responses.
-"""
-    try:
-        response = model.generate_content(prompt)
-        return clean_ai_response(response.text)
-    except Exception as e:
-        console.print(f"[yellow]Warning: AI error - {e}[/yellow]")
-        return "<p>AI analyst report unavailable.</p>"
-
 def generate_html_report(suspicious_ips, log_summary, ai_report_html, timestamp):
+    # This version uses a more basic stylesheet since Tailwind classes aren't generated
+    # by the markdown converter. It still looks clean and professional.
     html_template = f"""
     <!DOCTYPE html>
     <html lang="en">
@@ -284,62 +253,55 @@ def generate_html_report(suspicious_ips, log_summary, ai_report_html, timestamp)
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Cybersecurity Threat Analysis Report</title>
-        <script src="https://cdn.tailwindcss.com"></script>
         <style>
-            body {{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }}
+            body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; margin: 0; padding: 20px; }}
+            .container {{ max-width: 1000px; margin: 0 auto; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 40px; }}
+            header {{ text-align: center; border-bottom: 1px solid #dee2e6; padding-bottom: 20px; margin-bottom: 30px; }}
+            h1 {{ color: #0056b3; font-size: 2.5em; margin-bottom: 0; }}
+            h2 {{ color: #0056b3; border-bottom: 2px solid #0056b3; padding-bottom: 10px; margin-top: 40px; }}
+            h3 {{ color: #17a2b8; }}
+            .stats-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; text-align: center; margin-bottom: 30px; }}
+            .stat-box {{ background-color: #e9f7ff; padding: 20px; border-radius: 8px; }}
+            .stat-box p:first-child {{ font-weight: bold; margin: 0; }}
+            .stat-box p:last-child {{ font-size: 2em; font-weight: bold; color: #0056b3; margin: 0; }}
+            .ip-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; }}
+            .ip-card {{ background-color: #f8f9fa; padding: 20px; border-radius: 8px; border-left: 5px solid #17a2b8; }}
+            .ai-report table {{ border-collapse: collapse; width: 100%; margin-top: 1em; }}
+            .ai-report th, .ai-report td {{ border: 1px solid #dee2e6; padding: 8px; text-align: left; }}
+            .ai-report th {{ background-color: #f2f2f2; }}
+            code {{ background-color: #e9ecef; padding: 2px 4px; border-radius: 4px; }}
         </style>
     </head>
-    <body class="bg-white text-gray-800 p-6 sm:p-10">
-        <div class="max-w-7xl mx-auto bg-white rounded-lg shadow-md p-8 sm:p-12">
-            <header class="text-center mb-10">
-                <h1 class="text-3xl sm:text-4xl font-bold text-blue-600 mb-2">Log Analysis & CTI Report</h1>
-                <p class="text-sm text-gray-500">Report Generated: {timestamp}</p>
+    <body>
+        <div class="container">
+            <header>
+                <h1>Log Analysis & CTI Report</h1>
+                <p>Report Generated: {timestamp}</p>
             </header>
 
-            <section class="mb-10">
-                <h2 class="text-2xl font-semibold text-blue-500 mb-4">General Statistics</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div class="bg-blue-50 p-4 rounded-lg">
-                        <p class="font-bold">Total Requests</p>
-                        <p class="text-2xl">{log_summary['total_requests']}</p>
-                    </div>
-                    <div class="bg-blue-50 p-4 rounded-lg">
-                        <p class="font-bold">Unique IPs</p>
-                        <p class="text-2xl">{log_summary['unique_ips']}</p>
-                    </div>
-                    <div class="bg-blue-50 p-4 rounded-lg">
-                        <p class="font-bold">Suspicious IPs</p>
-                        <p class="text-2xl">{len(suspicious_ips)}</p>
-                    </div>
-                    <div class="bg-blue-50 p-4 rounded-lg">
-                        <p class="font-bold">4xx Error Ratio</p>
-                        <p class="text-2xl">{log_summary['error_ratio']:.2%}</p>
-                    </div>
+            <section>
+                <h2>General Statistics</h2>
+                <div class="stats-grid">
+                    <div class="stat-box"><p>Total Requests</p><p>{log_summary['total_requests']}</p></div>
+                    <div class="stat-box"><p>Unique IPs</p><p>{log_summary['unique_ips']}</p></div>
+                    <div class="stat-box"><p>Suspicious IPs</p><p>{len(suspicious_ips)}</p></div>
+                    <div class="stat-box"><p>4xx Error Ratio</p><p>{log_summary['error_ratio']:.2%}</p></div>
                 </div>
             </section>
 
-            <section class="mb-10">
-                <h2 class="text-2xl font-semibold text-blue-500 mb-4">IP Details</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <section>
+                <h2>Suspicious IP Details</h2>
+                <div class="ip-grid">
     """
     for ip, data in suspicious_ips.items():
-        vt = data['cti'].get('virustotal', {})
-        talos = data['cti'].get('talos', {})
-        abuse = data['cti'].get('abuseipdb', {})
         severity = data['severity']
-        severity_color = "text-green-600" if severity == 'Harmless' else "text-yellow-600" if severity == 'Suspicious' else "text-red-600"
-        info_list = data['attributes']
-        vulnerabilities = ', '.join(vt.get('tags', [])) or 'None'
-        suspicious_ua = 'Yes' if data['stats']['malicious_ua'] else 'No'
-        # Ensure 15 items
-        while len(info_list) < 15:
-            info_list.append('N/A')
+        severity_color = "green" if severity == 'Harmless' else "#ffc107" if severity == 'Suspicious' else "#dc3545"
         html_template += f"""
-                    <div class="bg-blue-50 p-6 rounded-lg shadow">
-                        <h3 class="text-xl font-bold text-gray-800 mb-2">{ip}</h3>
-                        <p class="mb-4">Severity: <span class="{severity_color} font-semibold">{severity}</span></p>
-                        <ul class="space-y-1 text-sm">
-                            {''.join(f'<li>{info}</li>' for info in info_list)}
+                    <div class="ip-card" style="border-left-color: {severity_color};">
+                        <h3>{ip}</h3>
+                        <p><strong>Severity: <span style="color: {severity_color};">{severity}</span></strong></p>
+                        <ul>
+                            {''.join(f'<li>{info}</li>' for info in data['attributes'])}
                         </ul>
                     </div>
         """
@@ -348,8 +310,8 @@ def generate_html_report(suspicious_ips, log_summary, ai_report_html, timestamp)
                 </div>
             </section>
 
-            <section>
-                <h2 class="text-2xl font-semibold text-blue-500 mb-4">AI Analyst Report</h2>
+            <section class="ai-report">
+                <h2>AI Analyst Report</h2>
     """
     html_template += ai_report_html
     html_template += """
@@ -413,73 +375,83 @@ def main():
     parser.add_argument('log_file', help="Path to the access log file")
     args = parser.parse_args()
 
-    with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), BarColumn(), transient=True) as progress:
-        task = progress.add_task(description="Parsing logs...", total=None)
-        logs = parse_log_file(args.log_file)
-        progress.update(task, description="Extracting unique IPs...")
-        unique_ips = get_unique_ips(logs)
-        suspicious_ips = {}
-        for ip in progress.track(unique_ips, description="Enriching IPs..."):
-            cti = enrich_ip(ip)
-            if is_suspicious(cti):
-                stats = get_ip_stats(logs, ip)
-                severity = determine_severity(cti)
-                attributes = get_ip_attributes(ip, cti, stats)
-                suspicious_ips[ip] = {'cti': cti, 'stats': stats, 'severity': severity, 'attributes': attributes}
+    # Wrap the main logic in a try/except block to catch the rate limit error
+    try:
+        with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), BarColumn(), transient=True) as progress:
+            task = progress.add_task(description="Parsing logs...", total=None)
+            logs = parse_log_file(args.log_file)
+            progress.update(task, description="Extracting unique IPs...")
+            unique_ips = get_unique_ips(logs)
+            suspicious_ips = {}
+            for ip in progress.track(unique_ips, description="Enriching IPs..."):
+                cti = enrich_ip(ip)
+                if is_suspicious(cti):
+                    stats = get_ip_stats(logs, ip)
+                    severity = determine_severity(cti)
+                    attributes = get_ip_attributes(ip, cti, stats)
+                    suspicious_ips[ip] = {'cti': cti, 'stats': stats, 'severity': severity, 'attributes': attributes}
 
-        progress.update(task, description="Generating log summary...")
-        log_summary = get_log_summary(logs)
+            progress.update(task, description="Generating log summary...")
+            log_summary = get_log_summary(logs)
 
-        # Prepare findings for AI
-        findings = {
-            'general': log_summary,
-            'ips': {}
-        }
-        for ip, data in suspicious_ips.items():
-            filtered_attrs = [attr for attr in data['attributes'] if not attr.endswith('N/A')]
-            findings['ips'][ip] = {
-                'severity': data['severity'],
-                'stats': data['stats'],
-                'attributes': filtered_attrs
+            # Prepare findings for AI
+            findings = {
+                'general': log_summary,
+                'ips': {}
             }
+            for ip, data in suspicious_ips.items():
+                filtered_attrs = [attr for attr in data['attributes'] if not attr.endswith('N/A')]
+                findings['ips'][ip] = {
+                    'severity': data['severity'],
+                    'stats': data['stats'],
+                    'attributes': filtered_attrs
+                }
 
-        progress.update(task, description="Generating AI analyst report...")
-        ai_report_html = ai_analyst_report(findings)
+            progress.update(task, description="Generating AI analyst report...")
 
-        # Generate Markdown version of AI report
-        md_prompt = """
-Based on the following log analysis and CTI findings:
+            # --- OPTIMIZATION: SINGLE AI CALL ---
+            # 1. Generate one Markdown report from the AI
+            md_prompt = """
+    Based on the following log analysis and CTI findings:
+    {}
+    Act as an expert SOC analyst and generate a highly detailed, actionable intelligence report. Structure the report with these sections: Executive Summary, Threat Assessment, Anomalous Patterns, Problem-Solving Approach, Recommendations, and Additional Insights.
+    Output only in Markdown format. Use ## for main sections, ### for subsections, lists, and tables. Emphasize severity with **bold**.
+    """
+            findings_json = json.dumps(findings, indent=2)
+            md_prompt = md_prompt.format(findings_json)
+            
+            response = model.generate_content(md_prompt)
+            ai_report_md = clean_ai_response(response.text)
 
-{}
+            # 2. Convert that Markdown to HTML for the file report
+            # The 'tables' extension is needed for markdown tables to render correctly in HTML
+            ai_report_html = md_converter.markdown(ai_report_md, extensions=['tables', 'fenced_code'])
 
-Act as an expert SOC analyst and generate a highly detailed, actionable intelligence report with a strong emphasis on solving security issues. The AI-generated content is the core of this report, so provide in-depth analysis and insights. Structure the report with the following sections, each with comprehensive content:
-- Executive Summary: Offer a concise yet thorough overview, including total requests, unique IPs, overall threat level, and key takeaways for decision-makers.
-- Threat Assessment: Provide an exhaustive analysis of critical threats, listing all IP addresses with severity levels (Malicious, Suspicious, Harmless), detailed CTI data (e.g., abuse scores, malicious counts, geographic origins), and potential impact on the system.
-- Anomalous Patterns: Identify and explain unusual activity patterns (e.g., high 404 ratios, malicious user agents) with specific examples from the data, hypothesize root causes, and correlate with CTI findings.
-- Problem-Solving Approach: Deliver a robust strategy to address threats, including root cause analysis, specific mitigation tactics (e.g., IP blocking scripts, firewall rule updates, intrusion detection configurations), and sample configurations or code snippets where applicable.
-- Recommendations: Present a prioritized action plan with clear, actionable steps, estimated timelines (e.g., immediate, within 24 hours, within 1 week), and suggested responsible teams or roles (e.g., network admins, security team).
-- Additional Insights: Provide advanced observations (e.g., ISP trends, regional threat clusters, historical context) to enhance long-term security posture and prevent recurrence.
-Output only the Markdown content for the report section (do not include <html>, <head>, or <body> tags).
-Use Markdown syntax with ## for main sections, ### for subsections, detailed lists, tables for data comparison, and emphasis for severity (e.g., **Malicious**).
-Ensure the AI content is the highlight, offering deep insights, practical solutions, and a clear narrative to guide security responses.
-"""
-        findings_json = json.dumps(findings, indent=2)
-        md_prompt = md_prompt.format(findings_json)
-        response = model.generate_content(md_prompt)
-        ai_report_md = clean_ai_response(response.text)
 
-    # Generate and save reports
-    reports_dir = 'reports'
-    os.makedirs(reports_dir, exist_ok=True)
-    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    html_path = os.path.join(reports_dir, f'report_{timestamp}.html')
-    html_content = generate_html_report(suspicious_ips, log_summary, ai_report_html, timestamp)
-    with open(html_path, 'w', encoding='utf-8') as f:
-        f.write(html_content)
-    console.print(f"[green]HTML report saved: {html_path}[/green]")
+        # --- END OF OPTIMIZATION ---
 
-    # Display dashboard
-    display_dashboard(suspicious_ips, log_summary, ai_report_md)
+        # Generate and save reports
+        reports_dir = 'reports'
+        os.makedirs(reports_dir, exist_ok=True)
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        html_path = os.path.join(reports_dir, f'report_{timestamp}.html')
+        html_content = generate_html_report(suspicious_ips, log_summary, ai_report_html, timestamp)
+        with open(html_path, 'w', encoding='utf-8') as f:
+            f.write(html_content)
+        console.print(f"[green]HTML report saved: {html_path}[/green]")
+
+        # Display dashboard
+        display_dashboard(suspicious_ips, log_summary, ai_report_md)
+
+    except genai.types.generation_types.BlockedPromptException as e:
+        console.print("[bold red]Error: The AI prompt was blocked.[/bold red]")
+        console.print(f"This can happen due to safety settings. Please check the content of your logs. Details: {e}")
+    except Exception as e:
+        # Catch other potential errors, including the rate limit error
+        console.print(f"[bold red]An unexpected error occurred:[/bold red]\n{e}")
+        if "ResourceExhausted" in str(e):
+             console.print("\n[bold yellow]This looks like a rate limit error. Please wait a minute before trying again.[/bold yellow]")
+
 
 if __name__ == "__main__":
     main()
