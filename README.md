@@ -13,7 +13,7 @@ git clone https://github.com/ahlimany/cladla.git
 
 Navigate to the project directory:
 ```
-bashcd cladla
+bash cd cladla
 ```
 ## Installation
 
@@ -21,7 +21,7 @@ Ensure you have Python 3.10 or later installed on your system.
 Install the required dependencies using the provided requirements.txt file:
 
 ```
-bashpip3 install -r requirements.txt
+bash pip3 install -r requirements.txt
 ```
 ### Dependencies
 The tool relies on the following Python packages, listed in requirements.txt:
@@ -44,7 +44,7 @@ Run the Tool:
 
 Execute the script with the following command:
 ```
-bashpython3 cladla.py access_log.txt
+bash python3 cladla.py access_log.txt
 ```
 The tool will:
 
