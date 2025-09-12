@@ -19,7 +19,7 @@ from datetime import datetime
 import markdown as md_converter
 
 # API Keys
-ABUSEIPDB_API_KEY = '0c0f69b1dd11ed1b9c50a3ce8faad2acc596b4a5a39076d757fa3c4ddd6f3438c8208228784ab0db'
+ABUSEIPDB_API_KEY = '8e09a441741aa9d719ee96d433b23699c75637e4131e30eaed682904334d72f892087ff7e741fb41'
 VIRUSTOTAL_API_KEY = '1b5a7f7d84a7eda7afa4612eddedde7c04cfcd11b3a4d5a7f889e2687c7f7023'
 GEMINI_API_KEY = 'AIzaSyAaVwSTjO-89oRQBqROQpfK37vk2E5ZzoQ'
 
