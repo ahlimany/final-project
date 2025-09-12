@@ -28,6 +28,11 @@ python app.py cli <path_to_log_file>
 - The tool will process the log, generate a report, and save it as `threat_report.html` in the `reports/` directory.
 - This mode is **recommended** as it consumes minimal resources.
 
+- To open the report use 
+```bash
+firefox reports/threat_report
+```
+
 ### 3. Web Mode (Not Recommended)
 
 The web mode uses a Flask server and requires more system resources, making it less efficient. To run:
