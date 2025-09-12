@@ -1,0 +1,129 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cybersecurity Threat Analysis Report</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        </style>
+    </head>
+    <body class="bg-white text-gray-800 p-6 sm:p-10">
+        <div class="max-w-7xl mx-auto bg-white rounded-lg shadow-md p-8 sm:p-12">
+            <header class="text-center mb-10">
+                <h1 class="text-3xl sm:text-4xl font-bold text-blue-600 mb-2">Log Analysis & CTI Report</h1>
+                <p class="text-sm text-gray-500">Report Generated: 20250912_182245</p>
+            </header>
+
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-blue-500 mb-4">General Statistics</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="font-bold">Total Requests</p>
+                        <p class="text-2xl">0</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="font-bold">Unique IPs</p>
+                        <p class="text-2xl">0</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="font-bold">Suspicious IPs</p>
+                        <p class="text-2xl">0</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="font-bold">4xx Error Ratio</p>
+                        <p class="text-2xl">0.00%</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-blue-500 mb-4">IP Details</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-blue-500 mb-4">AI Analyst Report</h2>
+    <div class="bg-white p-6">
+  <h2 class="text-2xl text-blue-600 font-bold mb-4">Security Intelligence Report</h2>
+
+  <h2 class="text-xl text-blue-600 font-bold mb-4">Executive Summary</h2>
+  <p class="text-gray-700 mb-2">This report analyzes log data and CTI findings to assess the current security posture.  The provided data indicates a complete absence of network activity, resulting in zero total requests, zero unique IPs, and zero errors. This lack of data prevents a traditional threat assessment.  The overall threat level is currently assessed as <strong>Low</strong> due to the absence of any observed activity. However, this warrants further investigation to determine if this absence of activity is expected or indicative of a larger underlying issue (e.g., sensor malfunction, network outage).</p>
+  <ul class="list-disc list-inside text-gray-700">
+    <li><strong>Total Requests:</strong> 0</li>
+    <li><strong>Unique IPs:</strong> 0</li>
+    <li><strong>Overall Threat Level:</strong> Low (Pending further investigation)</li>
+    <li><strong>Key Takeaway:</strong>  Absence of network activity requires immediate verification of system health and monitoring functionality.</li>
+  </ul>
+
+
+  <h2 class="text-xl text-blue-600 font-bold mb-4">Threat Assessment</h2>
+  <p class="text-gray-700 mb-2">Due to the absence of any recorded IP addresses or network activity in the provided data, no threat assessment can be performed at this time.  A comprehensive threat assessment requires network activity data.</p>
+
+
+  <h2 class="text-xl text-blue-600 font-bold mb-4">Anomalous Patterns</h2>
+  <p class="text-gray-700 mb-2">The most significant anomalous pattern is the complete absence of any network activity.  This deviates significantly from expected behavior and necessitates an immediate investigation. Potential root causes include:</p>
+  <ul class="list-disc list-inside text-gray-700">
+    <li><strong>Sensor Malfunction:</strong> The system responsible for collecting and logging network data may be malfunctioning or offline.</li>
+    <li><strong>Network Outage:</strong> A network outage could prevent any requests from reaching the system.</li>
+    <li><strong>Configuration Error:</strong> The logging system might be incorrectly configured, failing to record network activity.</li>
+    <li><strong>Intentional Disruption:</strong> Though unlikely given the lack of other indicators, a sophisticated attack might be masking itself through the complete disruption of logging functionality.</li>
+  </ul>
+
+  <h2 class="text-xl text-blue-600 font-bold mb-4">Problem-Solving Approach</h2>
+  <p class="text-gray-700 mb-2">The primary approach is to diagnose and resolve the root cause of the missing network activity data. This involves:</p>
+  <ol class="list-decimal list-inside text-gray-700">
+    <li><strong>Verify Sensor Functionality:</strong> Check the logs and status of the logging system itself. Restart the sensor or replace it if necessary.</li>
+    <li><strong>Investigate Network Connectivity:</strong> Perform network diagnostics to ensure the system is properly connected to the network and that network connectivity is functioning as expected.</li>
+    <li><strong>Review System Configuration:</strong> Verify that the logging system is properly configured and that logs are being written to the correct location.</li>
+    <li><strong>Check for System Errors:</strong> Review system logs for any errors or warnings related to the logging system or network connectivity.</li>
+  </ol>
+  <p class="text-gray-700">Specific mitigation actions will be determined upon identifying the root cause.</p>
+
+
+  <h2 class="text-xl text-blue-600 font-bold mb-4">Recommendations</h2>
+  <table class="min-w-full divide-y divide-gray-200">
+    <thead class="bg-gray-50">
+      <tr>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Timeline</th>
+        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Responsible Team</th>
+      </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+      <tr>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Verify Log System Functionality</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Immediate</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Security Team/System Admins</td>
+      </tr>
+      <tr>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Investigate Network Connectivity</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Within 24 hours</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Network Admins</td>
+      </tr>
+      <tr>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Review System Configuration and Logs</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Within 24 hours</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Security Team/System Admins</td>
+      </tr>
+      <tr>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Develop and Implement Continuous Monitoring Solutions</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Within 1 week</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Security Team</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <h2 class="text-xl text-blue-600 font-bold mb-4">Additional Insights</h2>
+  <p class="text-gray-700 mb-2">The lack of data prevents analysis of ISP trends, regional threat clusters, and historical context at this time.  Once network activity is restored, a comprehensive analysis will be conducted to improve our long-term security posture.</p>
+</div>
+            </section>
+        </div>
+    </body>
+    </html>
+    

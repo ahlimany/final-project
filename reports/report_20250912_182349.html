@@ -1,0 +1,132 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cybersecurity Threat Analysis Report</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        </style>
+    </head>
+    <body class="bg-white text-gray-800 p-6 sm:p-10">
+        <div class="max-w-7xl mx-auto bg-white rounded-lg shadow-md p-8 sm:p-12">
+            <header class="text-center mb-10">
+                <h1 class="text-3xl sm:text-4xl font-bold text-blue-600 mb-2">Log Analysis & CTI Report</h1>
+                <p class="text-sm text-gray-500">Report Generated: 20250912_182349</p>
+            </header>
+
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-blue-500 mb-4">General Statistics</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="font-bold">Total Requests</p>
+                        <p class="text-2xl">0</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="font-bold">Unique IPs</p>
+                        <p class="text-2xl">0</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="font-bold">Suspicious IPs</p>
+                        <p class="text-2xl">0</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="font-bold">4xx Error Ratio</p>
+                        <p class="text-2xl">0.00%</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-blue-500 mb-4">IP Details</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-blue-500 mb-4">AI Analyst Report</h2>
+    <div class="bg-white p-6">
+  <h2 class="text-2xl font-bold text-blue-600 mb-4">Executive Summary</h2>
+  <p class="text-gray-700 mb-2">This report analyzes log data and CTI findings to assess the current security posture.  The provided data indicates a complete absence of activity: zero total requests, zero unique IPs, and zero errors.  This lack of data prevents a definitive threat assessment. However, this unusual absence warrants investigation itself, as it could indicate a misconfiguration preventing log collection or a significant security incident leading to data loss.</p>
+  <p class="text-gray-700 mb-2"><strong>Total Requests:</strong> 0</p>
+  <p class="text-gray-700 mb-2"><strong>Unique IPs:</strong> 0</p>
+  <p class="text-gray-700 mb-2"><strong>Overall Threat Level:</strong> Unknown (due to lack of data)</p>
+  <p class="text-gray-700 mb-2"><strong>Key Takeaways:</strong> Immediate investigation required to determine why no logs are being collected.  A critical security vulnerability might exist resulting in log absence.</p>
+
+
+  <h2 class="text-2xl font-bold text-blue-600 mt-8 mb-4">Threat Assessment</h2>
+  <p class="text-gray-700 mb-4">No IP addresses were identified in the provided log data.  Therefore, no CTI analysis can be performed at this time.  The absence of IP addresses suggests a potentially critical issue with log collection or system monitoring.</p>
+
+
+  <h2 class="text-2xl font-bold text-blue-600 mt-8 mb-4">Anomalous Patterns</h2>
+  <p class="text-gray-700 mb-4">The most significant anomalous pattern is the complete absence of any network activity recorded in the logs.  This is highly unusual and indicates a major issue requiring immediate attention.  Possible explanations include:</p>
+  <ul class="list-disc list-inside text-gray-700 mb-4">
+    <li><strong>Log Collection Failure:</strong> The system responsible for collecting and reporting logs may be malfunctioning or misconfigured.</li>
+    <li><strong>System Compromise:</strong> An attacker might have compromised the system, disabling log collection to cover their tracks.</li>
+    <li><strong>Network Outage:</strong> A network outage might prevent log transmission.</li>
+    <li><strong>Sensor Blind Spot:</strong> The logging system might not be covering all relevant network segments or traffic sources.</li>
+  </ul>
+
+
+  <h2 class="text-2xl font-bold text-blue-600 mt-8 mb-4">Problem-Solving Approach</h2>
+  <p class="text-gray-700 mb-4">A multi-pronged approach is needed to address this issue. First, we must determine why no logs are being received:</p>
+  <ol class="list-decimal list-inside text-gray-700 mb-4">
+    <li><strong>Verify Log Collection System Functionality:</strong> Check the log aggregation system (e.g., Splunk, ELK, Graylog) for errors, configuration issues, and storage space availability.</li>
+    <li><strong>Investigate Network Connectivity:</strong> Ensure network connectivity between the log source and the log collection system is intact using ping and traceroute tests.</li>
+    <li><strong>Review System Logs and Event Logs:</strong> Examine other system logs and event logs (Windows Event Viewer, syslog) for any indications of failures, restarts, or security events that might explain the lack of log data.</li>
+    <li><strong>Inspect Firewall Rules:</strong> Verify that firewall rules are not blocking log traffic.</li>
+    <li><strong>Check for Signs of Compromise:</strong> Perform a full security scan of all affected systems using antivirus software and intrusion detection tools to check for malware or other malicious activity.</li>
+  </ol>
+
+  <h2 class="text-2xl font-bold text-blue-600 mt-8 mb-4">Recommendations</h2>
+  <div class="mb-4">
+    <table class="min-w-full table-auto border-collapse border border-gray-200">
+      <thead>
+        <tr class="bg-blue-100">
+          <th class="px-4 py-2 border border-gray-200 text-left text-gray-700">Action</th>
+          <th class="px-4 py-2 border border-gray-200 text-left text-gray-700">Timeline</th>
+          <th class="px-4 py-2 border border-gray-200 text-left text-gray-700">Responsible Team</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="bg-white">
+          <td class="px-4 py-2 border border-gray-200">Verify log collection system functionality</td>
+          <td class="px-4 py-2 border border-gray-200">Immediate</td>
+          <td class="px-4 py-2 border border-gray-200">Security Team, System Administrators</td>
+        </tr>
+        <tr class="bg-gray-100">
+          <td class="px-4 py-2 border border-gray-200">Investigate Network Connectivity</td>
+          <td class="px-4 py-2 border border-gray-200">Within 24 hours</td>
+          <td class="px-4 py-2 border border-gray-200">Network Team</td>
+        </tr>
+        <tr class="bg-white">
+          <td class="px-4 py-2 border border-gray-200">Review System Logs and Event Logs</td>
+          <td class="px-4 py-2 border border-gray-200">Within 24 hours</td>
+          <td class="px-4 py-2 border border-gray-200">Security Team, System Administrators</td>
+        </tr>
+        <tr class="bg-gray-100">
+          <td class="px-4 py-2 border border-gray-200">Check for Signs of Compromise (Full System Scan)</td>
+          <td class="px-4 py-2 border border-gray-200">Within 24 hours</td>
+          <td class="px-4 py-2 border border-gray-200">Security Team</td>
+        </tr>
+        <tr class="bg-white">
+          <td class="px-4 py-2 border border-gray-200">Implement enhanced log monitoring and alerting</td>
+          <td class="px-4 py-2 border border-gray-200">Within 1 week</td>
+          <td class="px-4 py-2 border border-gray-200">Security Team, System Administrators</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <h2 class="text-2xl font-bold text-blue-600 mt-8 mb-4">Additional Insights</h2>
+  <p class="text-gray-700 mb-4">The lack of data prevents detailed analysis of ISP trends, regional threat clusters, or historical context. Once log data is being collected properly,  correlating the logs with CTI data from reputable sources like VirusTotal, ThreatCrowd, and abuse.ch will be critical in improving future threat detection and response. Regular security assessments and penetration testing should be conducted to proactively identify vulnerabilities.</p>
+</div>
+            </section>
+        </div>
+    </body>
+    </html>
+    
