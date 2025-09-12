@@ -32,7 +32,7 @@ def index():
         
         return 'Analysis started in the background. Check <a href="/report">/report</a> in 1-5 minutes for the results.'
     
-    return render_template('templates/index.html')
+    return render_template('index.html')
 
 def run_analysis(filepath, abuseipdb_api_key, virustotal_api_key, gemini_api_key):
     findings, stats = analyze_logs(filepath, abuseipdb_api_key, virustotal_api_key)
