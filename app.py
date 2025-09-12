@@ -57,3 +57,4 @@ if __name__ == '__main__':
         print(f"Analysis complete. See '{report_file}' for the full report.")
     else:
         app.run(debug=True)
+        
