@@ -34,7 +34,7 @@
     <div class="content p-6 bg-gray-900 bg-opacity-90 rounded-lg shadow-lg max-w-md w-full">
         <h1 class="text-3xl font-bold text-blue-400 mb-4 text-center">Log Analyzer</h1>
         <p class="text-gray-300 mb-6 text-center">Upload your log file to analyze threats with AI-powered insights.</p>
-        <form method="post" enctype="multipart/form-data" class="space-y-4">
+        <form method="post" enctype="multipart/form-data" id="uploadForm" class="space-y-4">
             <div>
                 <label for="logfile" class="block text-sm font-medium text-gray-200">Select Log File</label>
                 <input type="file" name="logfile" id="logfile" class="mt-1 block w-full text-gray-300 bg-gray-800 border border-gray-700 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -64,7 +64,7 @@
         function draw() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#1e90ff'; // Blue Matrix text (DodgerBlue)
+            ctx.fillStyle = '#1e90ff'; // Blue Matrix text
             ctx.font = fontSize + 'px monospace';
             for (let i = 0; i < drops.length; i++) {
                 const text = chars.charAt(Math.floor(Math.random() * chars.length));
@@ -80,26 +80,40 @@
             canvas.height = window.innerHeight;
         });
 
-        document.querySelector('form').addEventListener('submit', (e) => {
+        const form = document.getElementById('uploadForm');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); // Prevent default form submission
             const progress = document.getElementById('progress');
             const status = document.getElementById('status');
             const progressBar = document.getElementById('progress-bar');
             progress.classList.remove('hidden');
             status.textContent = 'Analysis started...';
 
+            // Simulate progress
             let width = 0;
             const interval = setInterval(() => {
                 if (width >= 100) {
                     clearInterval(interval);
                     status.textContent = 'Redirecting to report...';
-                    setTimeout(() => {
-                        window.location.href = '/report';
-                    }, 1000);
+                    // Force redirect after simulation
+                    window.location.href = '/report';
                 } else {
                     width += 1;
                     progressBar.style.width = width + '%';
                 }
             }, 300);
+
+            // Submit form data asynchronously
+            const formData = new FormData(form);
+            fetch('/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log('Server response:', data);
+            })
+            .catch(error => console.error('Error:', error));
         });
     </script>
 </body>
