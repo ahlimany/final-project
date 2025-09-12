@@ -1,0 +1,130 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Cybersecurity Threat Analysis Report</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        </style>
+    </head>
+    <body class="bg-white text-gray-800 p-6 sm:p-10">
+        <div class="max-w-7xl mx-auto bg-white rounded-lg shadow-md p-8 sm:p-12">
+            <header class="text-center mb-10">
+                <h1 class="text-3xl sm:text-4xl font-bold text-blue-600 mb-2">Log Analysis & CTI Report</h1>
+                <p class="text-sm text-gray-500">Report Generated: 20250912_180414</p>
+            </header>
+
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-blue-500 mb-4">General Statistics</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="font-bold">Total Requests</p>
+                        <p class="text-2xl">0</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="font-bold">Unique IPs</p>
+                        <p class="text-2xl">0</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="font-bold">Suspicious IPs</p>
+                        <p class="text-2xl">0</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <p class="font-bold">4xx Error Ratio</p>
+                        <p class="text-2xl">0.00%</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-10">
+                <h2 class="text-2xl font-semibold text-blue-500 mb-4">IP Details</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-semibold text-blue-500 mb-4">AI Analyst Report</h2>
+    ```html
+<div class="bg-white p-6 rounded-lg shadow-md">
+  <h2 class="text-2xl font-bold text-blue-600 mb-4">Executive Summary</h2>
+  <p class="text-gray-700">This report analyzes log data and CTI findings to assess the current security posture.  The provided data indicates zero total requests, zero unique IPs, and zero errors.  This suggests a lack of  activity or a potential data reporting issue. The overall threat level is currently assessed as <strong>Low</strong>, however, further investigation is crucial to rule out data collection issues or a more sophisticated attack which is not currently being logged correctly.</p>
+  <p class="text-gray-700">Key takeaways for decision-makers: Immediate action is needed to verify the integrity of the logging system.  A thorough review of all logging mechanisms and data ingestion pipelines should be conducted.  This report further outlines steps to enhance overall security posture and prevent future incidents.</p>
+
+
+  <h2 class="text-2xl font-bold text-blue-600 mt-8 mb-4">Threat Assessment</h2>
+  <p class="text-gray-700">Based on the provided data, no IP addresses were identified.  Therefore, no CTI information could be gathered for any IP addresses. This lack of data is itself a key finding that warrants further investigation.  Potential causes include: failure of log collection systems, improperly configured logging, intentional evasion techniques.</p>
+
+  <h2 class="text-2xl font-bold text-blue-600 mt-8 mb-4">Anomalous Patterns</h2>
+  <p class="text-gray-700">The most significant anomaly is the complete absence of any activity recorded in the logs. This is highly unusual and suggests a severe problem with the log collection and analysis process.  Potential causes include: </p>
+  <ul class="list-disc list-inside text-gray-700">
+    <li><strong>Log ingestion failure:</strong> The system responsible for collecting and storing logs may have malfunctioned or stopped working.</li>
+    <li><strong>Log rotation or cleanup issues:</strong> Logs might have been inadvertently deleted or rotated prematurely.</li>
+    <li><strong>Configuration errors:</strong> Log collection settings might be incorrectly configured, leading to no data being captured.</li>
+    <li><strong>Data masking/filtering:</strong>  Overly aggressive data sanitization might be removing all log entries.</li>
+    <li><strong>Sophisticated attack:</strong>  A highly sophisticated attacker might be actively evading detection and preventing log generation.</li>
+  </ul>
+  <p class="text-gray-700">The absence of data prevents correlation with CTI findings.</p>
+
+
+  <h2 class="text-2xl font-bold text-blue-600 mt-8 mb-4">Problem-Solving Approach</h2>
+  <p class="text-gray-700">The primary focus should be on resolving the log data collection issue. A root cause analysis (RCA) is urgently needed.</p>
+  <ol class="list-decimal list-inside text-gray-700">
+    <li><strong>Verify Log Collection System:</strong> Check the integrity and functionality of all log collection agents, servers, and databases. Examine system logs and error messages for clues. </li>
+    <li><strong>Review Log Configuration:</strong> Carefully inspect the configuration files of all logging systems to ensure they are correctly configured to capture all relevant events. </li>
+    <li><strong>Inspect Data Ingestion Pipeline:</strong> Investigate the entire data flow from the source systems to the analysis platform. Identify any bottlenecks, errors, or missing components.</li>
+    <li><strong>Test Log Forwarding:</strong> Simulate events to test the entire log forwarding chain, verifying data is correctly received and stored.</li>
+    <li><strong>Implement Enhanced Monitoring:</strong> Add monitoring tools to track log collection status and alert on anomalies or failures.   Consider adding log shipping/centralized logging to a security information and event management (SIEM) system for enhanced visibility.</li>
+
+  </ol>
+
+  <h2 class="text-2xl font-bold text-blue-600 mt-8 mb-4">Recommendations</h2>
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Timeline</th>
+          <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Responsible Team</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Verify log collection system functionality</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Immediate</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">System Admins/Network Team</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Review and correct log configurations</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Within 24 hours</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Security Team/System Admins</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Implement enhanced log monitoring and alerting</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Within 1 week</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Security Team/DevOps</td>
+        </tr>
+        <tr>
+          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Investigate potential for sophisticated attack that bypasses current logging</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Ongoing</td>
+          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Security Team/Incident Response</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+
+  <h2 class="text-2xl font-bold text-blue-600 mt-8 mb-4">Additional Insights</h2>
+  <p class="text-gray-700">The lack of log data prevents detailed analysis of ISP trends, regional threat clusters, and historical context.  Once the log collection issue is resolved, historical data should be analyzed to identify any recurring patterns or potential vulnerabilities.  A comprehensive security audit should also be conducted to identify weaknesses in the current security infrastructure and recommend improvements.</p>
+
+</div>
+```
+            </section>
+        </div>
+    </body>
+    </html>
+    
