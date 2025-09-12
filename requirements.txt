@@ -1,8 +1,7 @@
 requests
 google.generativeai
-sys
-os 
 flask
 json
 re
 datetime
+threading

@@ -2,6 +2,7 @@
 import sys
 import os
 from flask import Flask, request, render_template, send_file
+from threading import Thread
 from log_analyzer import analyze_logs, generate_report, get_api_keys, configure_apis
 
 app = Flask(__name__)
@@ -24,11 +25,27 @@ def index():
             return 'No selected file'
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
         file.save(filepath)
-        findings, stats = analyze_logs(filepath, abuseipdb_api_key, virustotal_api_key)
-        report_file = os.path.join('reports', 'threat_report.html')
-        generate_report(findings, stats, report_file, gemini_api_key)
+        
+        # Run analysis in a background thread
+        thread = Thread(target=run_analysis, args=(filepath, abuseipdb_api_key, virustotal_api_key, gemini_api_key))
+        thread.start()
+        
+        return 'Analysis started in the background. Check <a href="/report">/report</a> in 1-5 minutes for the results.'
+    
+    return render_template('templates/index.html')
+
+def run_analysis(filepath, abuseipdb_api_key, virustotal_api_key, gemini_api_key):
+    findings, stats = analyze_logs(filepath, abuseipdb_api_key, virustotal_api_key)
+    report_file = os.path.join('reports', 'threat_report.html')
+    generate_report(findings, stats, report_file, gemini_api_key)
+
+@app.route('/report')
+def get_report():
+    report_file = os.path.join('reports', 'threat_report.html')
+    if os.path.exists(report_file):
         return send_file(report_file)
-    return render_template('index.html')
+    else:
+        return 'Report is not ready yet. Please try again in a few minutes or refresh the page.'
 
 if __name__ == '__main__':
     if len(sys.argv) > 1 and sys.argv[1] == 'cli':

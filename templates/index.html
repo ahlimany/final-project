@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Analyzer - Cybersecurity Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            color: #e0e0e0;
+            overflow: hidden;
+        }
+        #matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0.3;
+        }
+        .content {
+            position: relative;
+            z-index: 1;
+        }
+        .progress-bar {
+            width: 0;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center">
+    <canvas id="matrix"></canvas>
+    <div class="content p-6 bg-gray-900 bg-opacity-90 rounded-lg shadow-lg max-w-md w-full">
+        <h1 class="text-3xl font-bold text-green-400 mb-4 text-center">Log Analyzer</h1>
+        <p class="text-gray-300 mb-6 text-center">Upload your log file to analyze threats with AI-powered insights.</p>
+        <form method="post" enctype="multipart/form-data" class="space-y-4">
+            <div>
+                <label for="logfile" class="block text-sm font-medium text-gray-200">Select Log File</label>
+                <input type="file" name="logfile" id="logfile" class="mt-1 block w-full text-gray-300 bg-gray-800 border border-gray-700 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+            <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition duration-300">Analyze</button>
+        </form>
+        <div id="progress" class="mt-4 hidden">
+            <div class="text-sm text-gray-300">Analysis in Progress...</div>
+            <div class="w-full bg-gray-700 rounded-full h-2.5">
+                <div id="progress-bar" class="progress-bar bg-green-500 h-2.5 rounded-full"></div>
+            </div>
+        </div>
+        <p id="status" class="mt-4 text-center text-gray-400"></p>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const chars = '01';
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = [];
+        for (let i = 0; i < columns; i++) drops[i] = 1;
+
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars.charAt(Math.floor(Math.random() * chars.length));
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(draw, 33);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Progress simulation (client-side polling)
+        document.querySelector('form').addEventListener('submit', (e) => {
+            const progress = document.getElementById('progress');
+            const status = document.getElementById('status');
+            const progressBar = document.getElementById('progress-bar');
+            progress.classList.remove('hidden');
+            status.textContent = 'Analysis started...';
+
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    status.textContent = 'Redirecting to report...';
+                    setTimeout(() => {
+                        window.location.href = '/report';
+                    }, 1000);
+                } else {
+                    width += 1; // Simulated progress (actual progress needs server-side API)
+                    progressBar.style.width = width + '%';
+                }
+            }, 300); // Adjust speed as needed
+        });
+    </script>
+</body>
+</html>
