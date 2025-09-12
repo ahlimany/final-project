@@ -1,10 +1,5 @@
-[blue]
-   _ _ _ _ _        _       ____    _        _    
-  / _ _ _|| |       / \\   |  _ \ | |      / \\   
- | |      | |      / _ \\  | | | || |     / _ \\  
- | |_ _ _ | |_ _ _/ ___ \\ | |_| || |___ / ___ \\ 
-  \\_ _ _ | |_ __/_/     \\|____/ |_____/_/  \\_\\
-[white]   MADE BY AHLIMAN ABBASOV
+# CLADLA
+Cybersecurity Log Analysis and Detection Tool
 
 ## Introduction
 Cladla (Cybersecurity Log Analysis and Detection Tool) is a robust log analysis and cybersecurity threat intelligence (CTI) tool designed to process access log files and identify potential security threats. Built by Ahliman Abbasov, this tool was created to empower security operations center (SOC) analysts by detecting malicious IP activities, enriching data with CTI sources like AbuseIPDB, VirusTotal, and Talos, and generating actionable AI-powered reports. 
