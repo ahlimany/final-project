@@ -58,14 +58,6 @@ Enrich IP data with CTI from AbuseIPDB, VirusTotal, and Talos.
 Generate an AI-powered analyst report identifying threats and solutions.
 Display a dashboard and save an HTML report in the reports/ directory.
 
-
-
-
-## API Keys:
-
-Replace the placeholder API keys in cladla.py (e.g., ABUSEIPDB_API_KEY, VIRUSTOTAL_API_KEY, GEMINI_API_KEY) with your own valid keys from the respective services.
-
-
 ## Output:
 
 Check the console for a real-time dashboard.
@@ -74,4 +66,4 @@ Review the generated HTML report (e.g., report_20250912_210438.html) in the repo
 
 
 ## License
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the MIT License. See the LICENSE(./LISCENCE) file for details.
