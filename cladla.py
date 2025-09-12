@@ -42,11 +42,11 @@ MALICIOUS_UA_PATTERNS = [
 # ASCII Art for Branding
 AZERBAIJAN_CYBER_LOGO = """
 [blue]
-____  _       _      ____  _        _    
-/ ___|| |     / \\    |  _ \\| |      / \\   
-| |    | |    / _ \\   | | | | |     / _ \\  
- | |___ | |___/ ___ \\  | |_| | |___ / ___ \\ 
-   \\____||____/_/   \\_\\ |____/|_____/_/   \\_\\
+____  _      _      ____  _        _
+/ ___|| |    / \\    |  _ \\| |      / \\
+| |    | |   / _ \\   | | | | |     / _ \\
+ | |___ | |__/ ___ \\  | |_| | |___ / ___ \\
+  \\____||____/_/   \\_\\ |____/|_____/_/   \\_\\
 [white]   MADE BY AHLIMAN ABBASOV
 """
 
@@ -72,7 +72,7 @@ def get_unique_ips(logs):
 
 def check_abuseipdb(ip):
     try:
-        url = f"https://api.abuseipdb.com/api/v2/check?ipAddress={ip}"
+        url = f"[https://api.abuseipdb.com/api/v2/check?ipAddress=](https://api.abuseipdb.com/api/v2/check?ipAddress=){ip}"
         headers = {'Key': ABUSEIPDB_API_KEY, 'Accept': 'application/json'}
         response = requests.get(url, headers=headers)
         response.raise_for_status()
@@ -94,7 +94,7 @@ def check_abuseipdb(ip):
 
 def check_talos(ip):
     try:
-        url = f"https://talosintelligence.com/reputation_center/lookup?search={ip}"
+        url = f"[https://talosintelligence.com/reputation_center/lookup?search=](https://talosintelligence.com/reputation_center/lookup?search=){ip}"
         response = requests.get(url)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -118,7 +118,7 @@ def check_talos(ip):
 
 def check_virustotal(ip):
     try:
-        url = f"https://www.virustotal.com/api/v3/ip_addresses/{ip}"
+        url = f"[https://www.virustotal.com/api/v3/ip_addresses/](https://www.virustotal.com/api/v3/ip_addresses/){ip}"
         headers = {'x-apikey': VIRUSTOTAL_API_KEY}
         response = requests.get(url, headers=headers)
         response.raise_for_status()
@@ -235,11 +235,19 @@ def get_ip_attributes(ip, cti, stats):
     attributes = attributes[:15]
     return attributes
 
+def clean_ai_response(text):
+    """Removes markdown code fences from the AI's response."""
+    # This regex handles ```, ```html, ```markdown etc.
+    match = re.search(r'```(?:\w+)?\s*(.*?)\s*```', text, re.DOTALL)
+    if match:
+        return match.group(1).strip()
+    return text.strip()
+
 def ai_explain_threat(cti, stats):
     prompt = f"Explain this threat in one plain-English sentence for a non-technical person: IP with CTI {cti} and stats {stats}."
     try:
         response = model.generate_content(prompt)
-        return response.text.strip()
+        return clean_ai_response(response.text)
     except Exception as e:
         console.print(f"[yellow]Warning: AI error - {e}[/yellow]")
         return "AI explanation unavailable."
@@ -263,7 +271,7 @@ Ensure the AI content is the highlight, offering deep insights, practical soluti
 """
     try:
         response = model.generate_content(prompt)
-        return response.text.strip()
+        return clean_ai_response(response.text)
     except Exception as e:
         console.print(f"[yellow]Warning: AI error - {e}[/yellow]")
         return "<p>AI analyst report unavailable.</p>"
@@ -457,7 +465,8 @@ Ensure the AI content is the highlight, offering deep insights, practical soluti
 """
         findings_json = json.dumps(findings, indent=2)
         md_prompt = md_prompt.format(findings_json)
-        ai_report_md = model.generate_content(md_prompt).text.strip()
+        response = model.generate_content(md_prompt)
+        ai_report_md = clean_ai_response(response.text)
 
     # Generate and save reports
     reports_dir = 'reports'
@@ -465,7 +474,7 @@ Ensure the AI content is the highlight, offering deep insights, practical soluti
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
     html_path = os.path.join(reports_dir, f'report_{timestamp}.html')
     html_content = generate_html_report(suspicious_ips, log_summary, ai_report_html, timestamp)
-    with open(html_path, 'w') as f:
+    with open(html_path, 'w', encoding='utf-8') as f:
         f.write(html_content)
     console.print(f"[green]HTML report saved: {html_path}[/green]")
 
